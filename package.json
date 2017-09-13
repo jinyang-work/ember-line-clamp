@@ -1,7 +1,7 @@
 {
   "name": "ember-line-clamp",
   "version": "0.0.4",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "An ember addon component that provides a line-clamp solution with see more/see less capabilities",
   "keywords": [
     "ember-addon",
     "components",
@@ -13,12 +13,12 @@
     "read-more"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "Luis Torres",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": "https://github.com/Luinova/ember-line-clamp",
   "scripts": {
     "build": "ember build",
     "start": "ember server",
