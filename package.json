@@ -3,7 +3,14 @@
   "version": "0.0.3",
   "description": "The default blueprint for ember-cli addons.",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "components",
+    "truncate",
+    "clamp",
+    "overflow",
+    "ellipsis",
+    "see-more",
+    "read-more"
   ],
   "license": "MIT",
   "author": "",
