@@ -1,0 +1,23 @@
+.lt-line-clamp {
+  overflow: hidden;
+  position: relative;
+}
+
+.lt-line-clamp__ellipsis--dummy {
+  position: fixed;
+  visibility: hidden;
+  top: 0;
+  left: 0;
+}
+
+.lt-line-clamp--single-line {
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lt-line-clamp--multi-line {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+}

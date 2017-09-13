@@ -1,0 +1,26 @@
+{{#each _displayText as |line|}}
+  {{#if line.lastLine}}
+    <span class="lt-line-clamp__line lt-line-clamp__line--last">
+      {{unbound line.text}}
+      {{~#if line.needsEllipsis~}}
+        <span class="lt-line-clamp__ellipsis">{{unbound ellipsis}}
+          {{#if showMoreButton}}
+            <a href="#" class="lt-line-clamp__more" {{action "toggleTruncate"}}>{{unbound seeMoreText}}</a>
+          {{/if}}
+        </span>
+      {{~/if~}}
+    </span>
+  {{else}}
+    <span class="lt-line-clamp__line">{{unbound line.text}}</span>
+  {{/if}}
+{{else}}
+  {{_displayText}}
+{{/each}}
+
+{{#if showLessButton}}
+  {{#unless _truncated}}
+    {{#if _expanded}}
+      <span><a href="#" class="lt-line-clamp__less" {{action "toggleTruncate"}}>{{unbound seeLessText}}</a></span>
+    {{/if}}
+  {{/unless}}
+{{/if}}
