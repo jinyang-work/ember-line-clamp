@@ -5,13 +5,21 @@
 
 This Ember addon provides a component for truncating/clamping text.
 
+* Note: This component currently does not support block form.
+
 ## Intallation
 
 * `npm install ember-line-clamp`
 
+## Demo
+
+Demo application **coming soon**
+
 ## Usage
 
 To get started, place the `line-clamp` component in one of your templates and provide a string to the `text` attribute.
+
+### `text` - text to truncate
 
 ```handlebars
 {{line-clamp
@@ -19,11 +27,9 @@ To get started, place the `line-clamp` component in one of your templates and pr
 }}
 ```
 
-* Note: This component currently does not support block form.
+The `text` attribute is the only required attribute, but there are other important attributes (see the source code for more info).
 
-The `text` attribute is the only required attribute, but there are other important attributes (see the source code for more info):
-
-* `lines` - the number of lines at which the component clamps the text, default is `3`.
+### `lines` - the number of lines at which the component clamps the text, default is `3`.
 
 ```handlebars
 {{line-clamp
@@ -32,7 +38,7 @@ The `text` attribute is the only required attribute, but there are other importa
 }}
 ```
 
-* `ellipsis` - the characters to be used as the overflow element, default is `'...'`
+### `ellipsis` - the characters to be used as the overflow element, default is `'...'`
 
 ```handlebars
 {{line-clamp
@@ -42,7 +48,7 @@ The `text` attribute is the only required attribute, but there are other importa
 }}
 ```
 
-* `interactive` - enable see more/see less functionality and overpowers `showMoreButton` and `showLessButton` when `false`, deafult is `true`
+### `interactive` - enable see more/see less functionality and overpowers `showMoreButton` and `showLessButton` when `false`, deafult is `true`
 
 ```handlebars
 {{line-clamp
@@ -51,7 +57,7 @@ The `text` attribute is the only required attribute, but there are other importa
 }}
 ```
 
-* `showMoreButton` - enable/disable 'See More' functionality, default is `true`
+### `showMoreButton` - enable/disable 'See More' functionality, default is `true`
 
 ```handlebars
 {{line-clamp
@@ -60,7 +66,7 @@ The `text` attribute is the only required attribute, but there are other importa
 }}
 ```
 
-* `showLessButton` - enable/disable 'See Less' functionality, default is `true`
+### `showLessButton` - enable/disable 'See Less' functionality, default is `true`
 
 ```handlebars
 {{line-clamp
@@ -69,9 +75,9 @@ The `text` attribute is the only required attribute, but there are other importa
 }}
 ```
 
-* `seeMoreText` - text to use for the 'See More' button, default is `'See More'`
+### `seeMoreText` - text to use for the 'See More' button, default is `'See More'`
 
-* `seeLessText` - text to use for the 'See Less' button, default is `'See Less'`
+### `seeLessText` - text to use for the 'See Less' button, default is `'See Less'`
 
 ```handlebars
 {{line-clamp
@@ -82,11 +88,11 @@ The `text` attribute is the only required attribute, but there are other importa
 }}
 ```
 
-* `onExpand` - action/closure to trigger when text is expanded
+### `onExpand` - action/closure to trigger when text is expanded
 
-* `onCollapse` - action/closure to trigger when text is collapsed
+### `onCollapse` - action/closure to trigger when text is collapsed
 
-* `handleTruncate` - action/closure to trigger everytime the text goes through the truncation procedure, receives a boolean to determine if text was truncated
+### `handleTruncate` - action/closure to trigger everytime the text goes through the truncation procedure, receives a boolean to determine if text was truncated
 
 ```handlebars
 {{line-clamp
