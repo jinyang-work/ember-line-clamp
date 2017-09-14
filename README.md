@@ -189,6 +189,12 @@ This attribuet allows you to pass an action/closure to trigger everytime the tex
 
 For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
 
+## Dev TODOs
+
+- [ ] demo page
+- [ ] test cases
+- [ ] support block form
+
 ## Thanks
 
 * [CSS Line Clamping](http://guerillalabs.co/blog/css-line-clamping.html) article
