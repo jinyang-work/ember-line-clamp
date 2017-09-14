@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/Luinova/ember-line-clamp.svg?branch=master)](https://travis-ci.org/Luinova/ember-line-clamp)
 [![npm version](https://badge.fury.io/js/ember-line-clamp.svg)](https://badge.fury.io/js/ember-line-clamp)
+[![dependencies Status](https://david-dm.org/Luinova/ember-line-clamp/status.svg)](https://david-dm.org/Luinova/ember-line-clamp)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 This Ember addon provides a component for truncating/clamping text.
 
@@ -17,9 +19,13 @@ Demo application **coming soon**
 
 ## Usage
 
-To get started, place the `line-clamp` component in one of your templates and provide a string to the `text` attribute.
+To get started, place the `line-clamp` component in one of your templates and provide a string to the `text` attribute. The `line-clamp` component supports other attributes, for more details you can always look at the source code.
 
-### `text` - text to truncate
+### `text`
+
+The text attribute is not required but would be nice to truncate something.
+
+Default: ` `
 
 ```handlebars
 {{line-clamp
@@ -27,9 +33,11 @@ To get started, place the `line-clamp` component in one of your templates and pr
 }}
 ```
 
-The `text` attribute is the only required attribute, but there are other important attributes (see the source code for more info).
+### `lines`
 
-### `lines` - the number of lines at which the component clamps the text, default is `3`.
+This attribute allows you to set the number of lines to clamp the text.
+
+Default: `3`
 
 ```handlebars
 {{line-clamp
@@ -38,7 +46,11 @@ The `text` attribute is the only required attribute, but there are other importa
 }}
 ```
 
-### `ellipsis` - the characters to be used as the overflow element, default is `'...'`
+### `ellipsis`
+
+The characters/string to be used as the overflow element.
+
+Default: `...`
 
 ```handlebars
 {{line-clamp
@@ -48,7 +60,11 @@ The `text` attribute is the only required attribute, but there are other importa
 }}
 ```
 
-### `interactive` - enable see more/see less functionality and overpowers `showMoreButton` and `showLessButton` when `false`, deafult is `true`
+### `interactive`
+
+Line clamp is not always interactive, in fact if you use `-webkit-line-clamp` there is not interqaction enabled. This attribute allows you to enable see more/see less functionality and overpowers `showMoreButton` and `showLessButton` when `false`. In cases where you do not want any interaction `-webkit-line-clamp` is used in the background to save work.
+
+Default: `true`
 
 ```handlebars
 {{line-clamp
@@ -57,7 +73,11 @@ The `text` attribute is the only required attribute, but there are other importa
 }}
 ```
 
-### `showMoreButton` - enable/disable 'See More' functionality, default is `true`
+### `showMoreButton`
+
+This attribute enables/disables 'See More' functionality
+
+Default: `true`
 
 ```handlebars
 {{line-clamp
@@ -66,7 +86,11 @@ The `text` attribute is the only required attribute, but there are other importa
 }}
 ```
 
-### `showLessButton` - enable/disable 'See Less' functionality, default is `true`
+### `showLessButton`
+
+This attribute enables/disables 'See Less' functionality
+
+Default: `true`
 
 ```handlebars
 {{line-clamp
@@ -75,9 +99,25 @@ The `text` attribute is the only required attribute, but there are other importa
 }}
 ```
 
-### `seeMoreText` - text to use for the 'See More' button, default is `'See More'`
+### `seeMoreText`
 
-### `seeLessText` - text to use for the 'See Less' button, default is `'See Less'`
+This component should work in any language, hence this attribute allows you to set the text for the 'See More' button
+
+Default: `See More`
+
+```handlebars
+{{line-clamp
+  text="A really long text to truncate"
+  showLessButton=false
+  seeMoreText="Ver Más"
+}}
+```
+
+### `seeLessText`
+
+This component should work in any language, hence this attribute allows you to set the text for the 'See Less' button
+
+Default: `See Less`
 
 ```handlebars
 {{line-clamp
@@ -88,11 +128,32 @@ The `text` attribute is the only required attribute, but there are other importa
 }}
 ```
 
-### `onExpand` - action/closure to trigger when text is expanded
+### `onExpand`
 
-### `onCollapse` - action/closure to trigger when text is collapsed
+This attribuet allows you to pass an action/closure to trigger when text is expanded
 
-### `handleTruncate` - action/closure to trigger everytime the text goes through the truncation procedure, receives a boolean to determine if text was truncated
+```handlebars
+{{line-clamp
+  text="A really long text to truncate"
+  onExpand=doSomethingWhenTextIsExpanded
+}}
+```
+
+### `onCollapse`
+
+This attribuet allows you to pass an action/closure to trigger when text is collapsed
+
+```handlebars
+{{line-clamp
+  text="A really long text to truncate"
+  onExpand=doSomethingWhenTextIsExpanded
+  onCollapse=(action "doSomethingWhenTextIsCollapsed")
+}}
+```
+
+### `handleTruncate`
+
+This attribuet allows you to pass an action/closure to trigger everytime the text goes through the truncation procedure, receives a boolean to determine if text was truncated
 
 ```handlebars
 {{line-clamp
@@ -125,3 +186,10 @@ The `text` attribute is the only required attribute, but there are other importa
 * `ember build`
 
 For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
+
+## Thanks
+
+* [CSS Line Clamping](http://guerillalabs.co/blog/css-line-clamping.html) article
+* [@nilsynils](https://github.com/nilsynils) for his [Medium Post](https://medium.com/mofed/css-line-clamp-the-good-the-bad-and-the-straight-up-broken-865413f16e5)
+* [@One-com](https://github.com/One-com) for a [inspiration](https://github.com/One-com/react-truncate)
+
