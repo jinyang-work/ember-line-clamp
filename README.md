@@ -4,6 +4,8 @@
 [![npm version](https://badge.fury.io/js/ember-line-clamp.svg)](https://badge.fury.io/js/ember-line-clamp)
 [![dependencies Status](https://david-dm.org/Luinova/ember-line-clamp/status.svg)](https://david-dm.org/Luinova/ember-line-clamp)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+[![GitHub issues](https://img.shields.io/github/issues/Luinova/ember-line-clamp.svg)](https://github.com/Luinova/ember-line-clamp/issues)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/Luinova/ember-line-clamp/master/LICENSE.md)
 
 This Ember addon provides a component for truncating/clamping text.
 
