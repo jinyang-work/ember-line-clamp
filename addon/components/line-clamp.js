@@ -182,17 +182,22 @@ export default Ember.Component.extend({
   },
 
   willDestroyElement() {
-    this.element.removeChild(this.ellipsisElement);
+    this.ellipsisElement && this.element.removeChild(this.ellipsisElement);
     this._unbindResize();
     window.cancelAnimationFrame(this._scheduledResizeAnimationFrame);
   },
 
   onResize() {
-    if (this._scheduledResizeAnimationFrame) {
-      window.cancelAnimationFrame(this._scheduledResizeAnimationFrame);
-    }
+    // if (this._scheduledResizeAnimationFrame) {
+    //   window.cancelAnimationFrame(this._scheduledResizeAnimationFrame);
+    // }
 
-    this._scheduledResizeAnimationFrame = window.requestAnimationFrame(this._calculateTargetWidth);
+    // this._scheduledResizeAnimationFrame = window.requestAnimationFrame(this._calculateTargetWidth);
+
+    if (!this.working) {
+      this._scheduledResizeAnimationFrame = window.requestAnimationFrame(this._calculateTargetWidth);
+      this.working = true;
+    }
   },
 
   onTruncate(didTruncate) {
@@ -429,6 +434,8 @@ export default Ember.Component.extend({
     }
 
     this.onTruncate(didTruncate);
+
+    this.working = false;
 
     return lines;
   },
