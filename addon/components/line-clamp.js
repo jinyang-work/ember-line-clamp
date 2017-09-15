@@ -130,14 +130,18 @@ export default Ember.Component.extend({
    * @private
    */
   _displayText: Ember.computed('lines', 'text', 'targetWidth', '_expanded', function getDisplayText() {
-    const mounted = !!(this.element && this.get('targetWidth'));
-    if (typeof window !== 'undefined' && mounted) {
-      if (!this.get('_expanded')) {
-        return this._getLines();
-      } else {
-        this.onTruncate(false)
-        return this.get('text');
+    if (typeof FastBoot === 'undefined') {
+      const mounted = !!(this.element && this.get('targetWidth'));
+      if (typeof window !== 'undefined' && mounted) {
+        if (!this.get('_expanded')) {
+          return this._getLines();
+        } else {
+          this.onTruncate(false)
+          return this.get('text');
+        }
       }
+
+      return this.get('text');
     }
 
     return this.get('text');
