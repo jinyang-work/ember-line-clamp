@@ -192,6 +192,8 @@ export default Ember.Component.extend({
 
     this._unbindResize();
     window.cancelAnimationFrame(this._scheduledResizeAnimationFrame);
+
+    this._super(...arguments);
   },
 
   onResize() {
