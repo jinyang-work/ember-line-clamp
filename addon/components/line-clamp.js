@@ -177,8 +177,8 @@ export default Ember.Component.extend({
       const canvas = document.createElement('canvas');
       this.canvasContext = canvas.getContext('2d');
 
-      this._createEllipsisElement();
-      this.element.appendChild(this.ellipsisElement);
+      this._createDummyEllipsisElement();
+      this.element.appendChild(this.dummyEllipsisElement);
 
       this._calculateTargetWidth();
       this._bindResize();
@@ -186,7 +186,10 @@ export default Ember.Component.extend({
   },
 
   willDestroyElement() {
-    this.ellipsisElement && this.element.removeChild(this.ellipsisElement);
+    if (this.dummyEllipsisElement) {
+      this.element.removeChild(this.dummyEllipsisElement);
+    }
+
     this._unbindResize();
     window.cancelAnimationFrame(this._scheduledResizeAnimationFrame);
   },
@@ -267,14 +270,14 @@ export default Ember.Component.extend({
   // TODO: Remove this method - if consuming app has responsive styles that affect ellipsis element
   // this will give wrong width
   /**
-   * Gets ellipsisElement's offsetWidth
+   * Gets dummyEllipsisElement's offsetWidth
    * @method _getEllipsisWidth
    * @return {Number}
    * @private
    */
   _getEllipsisWidth() {
     if (!this._ellipsisWidth) {
-      this._ellipsisWidth = this._getElementWidth(this.ellipsisElement);
+      this._ellipsisWidth = this._getElementWidth(this.dummyEllipsisElement);
     }
 
     return this._ellipsisWidth;
@@ -283,14 +286,14 @@ export default Ember.Component.extend({
   /**
    * Utility method to create a DOM element mimicking the elment to be used for textoverflow/clamping
    * This element's purpose is for measuring only
-   * @method _createEllipsisElement
+   * @method _createDummyEllipsisElement
    * @return {Void}
    * @private
    */
-  _createEllipsisElement() {
-    this.ellipsisElement = document.createElement('span');
-    this.ellipsisElement.className = `${ELLIPSIS_CLASS} ${ELLIPSIS_DUMMY_CLASS}`;
-    this.ellipsisElement.innerHTML = this._isInteractive ? `${this.ellipsis} <a class="${MORE_CLASS}" href="#">${this.seeMoreText}</a>` : this.ellipsis;
+  _createDummyEllipsisElement() {
+    this.dummyEllipsisElement = document.createElement('span');
+    this.dummyEllipsisElement.className = `${ELLIPSIS_CLASS} ${ELLIPSIS_DUMMY_CLASS}`;
+    this.dummyEllipsisElement.innerHTML = this._isInteractive ? `${this.ellipsis} <a class="${MORE_CLASS}" href="#">${this.seeMoreText}</a>` : this.ellipsis;
   },
 
   /**
