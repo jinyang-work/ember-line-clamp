@@ -352,7 +352,8 @@ export default Ember.Component.extend({
     const lines = [];
     const numLines = this.get('lines');
     const text = this.get('text');
-    const textLines = text.split('\n').map(line => line.split(' '));
+    const normalizedText = text.toString().replace(/<br.*?[\/]?>/gi, '');
+    const textLines = normalizedText.split('\n').map(line => line.split(' '));
     let didTruncate = true;
 
     const ellipsisWidth = this._getEllipsisWidth();
