@@ -137,14 +137,14 @@ export default Ember.Component.extend({
           return this._getLines();
         } else {
           this.onTruncate(false)
-          return this.get('text');
+          return [];
         }
       }
 
-      return this.get('text');
+      return [];
     }
 
-    return this.get('text');
+    return [];
   }),
 
   init() {
