@@ -136,7 +136,7 @@ export default Ember.Component.extend({
         if (!this.get('_expanded')) {
           return this._getLines();
         } else {
-          this.onTruncate(false)
+          this.onTruncate(false);
           return [];
         }
       }
