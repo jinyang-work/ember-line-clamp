@@ -1,4 +1,4 @@
-{{#each _displayText as |line|}}
+{{#each _textLines as |line|}}
   {{#if line.lastLine}}
     <span class="lt-line-clamp__line lt-line-clamp__line--last">
       {{unbound line.text}}
@@ -13,6 +13,8 @@
   {{else}}
     <span class="lt-line-clamp__line">{{unbound line.text}}</span>
   {{/if}}
+{{else if _strippedText}}
+  {{_strippedText}}
 {{else}}
   {{text}}
 {{/each}}

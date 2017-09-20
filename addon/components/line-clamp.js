@@ -69,6 +69,13 @@ export default Ember.Component.extend({
   lines: 3,
 
   /**
+   * When using native CSS when available user might want text to be stripped from `<br>` tags
+   * @type {Boolean}
+   * @default false
+   */
+  stripText: false,
+
+  /**
    * An override that can be used to hide both seeMore and seeLess interactive elements
    * @type {Boolean}
    * @default true
@@ -125,11 +132,16 @@ export default Ember.Component.extend({
   _truncated: true,
 
   /**
-   * Property used to as the text/lines to be displayed/used in the component
-   * @type {String|Array}
+   * Property that returns a stripped version of the text with no <br> tags
+   */
+  _strippedText: '',
+
+  /**
+   * Property that returns array of lines to render
+   * @type {Array}
    * @private
    */
-  _displayText: Ember.computed('lines', 'text', 'targetWidth', '_expanded', function getDisplayText() {
+  _textLines: Ember.computed('lines', 'text', 'targetWidth', '_expanded', function getDisplayText() {
     if (typeof FastBoot === 'undefined') {
       const mounted = !!(this.element && this.get('targetWidth'));
       if (typeof window !== 'undefined' && mounted) {
@@ -171,8 +183,10 @@ export default Ember.Component.extend({
     if (this._shouldUseNativeLineClampCSS()) {
       this.set('_lineClampClass', MULTI_LINE_CLAMP_CLASS);
       this.set('_lineClampStyle', Ember.String.htmlSafe(`-webkit-line-clamp: ${this.get('lines')}`));
+      this.stripText && this.set('_strippedText', this._stripBrTags(this.get('text')));
     } else if (this._shouldUseNativeTextOverflowCSS()) {
       this.set('_lineClampClass', SINGLE_LINE_CLAMP_CLASS);
+      this.stripText && this.set('_strippedText', this._stripBrTags(this.get('text')));
     } else {
       const canvas = document.createElement('canvas');
       this.canvasContext = canvas.getContext('2d');
@@ -343,6 +357,16 @@ export default Ember.Component.extend({
   },
 
   /**
+   * This method removes `<br>` tags in the text
+   * @method _stripBrTags
+   * @param {String} text
+   * @private
+   */
+  _stripBrTags(text) {
+    return text.toString().replace(/<br.*?[\/]?>/gi, '');
+  },
+
+  /**
    * This method does the truncation by maipulating the text and creating lines
    * @method _getLines
    * @return {Array}
@@ -352,8 +376,8 @@ export default Ember.Component.extend({
     const lines = [];
     const numLines = this.get('lines');
     const text = this.get('text');
-    const normalizedText = text.toString().replace(/<br.*?[\/]?>/gi, '');
-    const textLines = normalizedText.split('\n').map(line => line.split(' '));
+    const strippedText = this._stripBrTags(text);
+    const textLines = strippedText.split('\n').map(line => line.split(' '));
     let didTruncate = true;
 
     const ellipsisWidth = this._getEllipsisWidth();
