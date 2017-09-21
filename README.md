@@ -48,6 +48,20 @@ Default: `3`
 }}
 ```
 
+### `stripText`
+
+This attribute allows user to strip text of `<br>` tags when using native CSS solution is available.
+
+Default: `false`
+
+```handlebars
+{{line-clamp
+  text="A really long text to truncate"
+  lines=2
+  stripText=true
+}}
+```
+
 ### `ellipsis`
 
 The characters/string to be used as the overflow element.
