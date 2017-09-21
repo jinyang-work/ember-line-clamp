@@ -16,6 +16,7 @@ const MORE_CLASS = `${LINE_CLAMP_CLASS}__more`;
  * @param {String}  ellipsis @default '...' Characters to be used as ellipsis
  * @param {Boolean} interactive @default true Enable see more/see less functionality
  * @param {Boolean} useJsOnly @default false Disable native CSS solution
+ * @param {Boolean} truncate @default true Allow managing truncation from outside component
  * @param {Boolean} showMoreButton @default true
  * @param {Boolean} showLessButton @default true
  * @param {String}  seeMoreText @default 'See More'
@@ -92,6 +93,13 @@ export default Ember.Component.extend({
   useJsOnly: false,
 
   /**
+   * Attribute that can be used to control truncation from outside of the component
+   * @type {Boolean}
+   * @default true
+   */
+  truncate: true,
+
+  /**
    * An override that can be used to hide "see more" interactive element
    * @type {Boolean}
    * @default true
@@ -139,6 +147,11 @@ export default Ember.Component.extend({
    * @private
    */
   _truncated: true,
+
+  /**
+   * Used to track changes in the `truncate` attribute
+   */
+  _oldTruncate: true,
 
   /**
    * Used to track state and know if text should be stripped
@@ -192,6 +205,8 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
+    this.set('_oldTruncate', this.get('truncate'));
+
     // interative prop overpowers showMoreButton and showLessButton when false
     this.showMoreButton = this.interactive && this.showMoreButton;
     this.showLessButton = this.interactive && this.showLessButton;
@@ -207,6 +222,13 @@ export default Ember.Component.extend({
     this.onTruncate = this.onTruncate.bind(this);
     this._measureWidth = this._measureWidth.bind(this);
     this._calculateTargetWidth = this._calculateTargetWidth.bind(this);
+  },
+
+  didReceiveAttrs() {
+    if (this.get('truncate') !== this.get('_oldTruncate')) {
+      this._handleNewTruncateAttr(this.get('truncate'));
+      this.set('_oldTruncate', this.get('truncate'));
+    }
   },
 
   didInsertElement() {
@@ -264,6 +286,19 @@ export default Ember.Component.extend({
         this.sendAction('handleTruncate', didTruncate);
       }
     }
+  },
+
+  _handleNewTruncateAttr(truncate) {
+    if (this._shouldUseNativeLineClampCSS()) {
+      this.set('_lineClampClass', truncate ? MULTI_LINE_CLAMP_CLASS : '');
+      this.set('_lineClampStyle', truncate ? Ember.String.htmlSafe(`-webkit-line-clamp: ${this.get('lines')}`) : Ember.String.htmlSafe(''));
+      this.set('_stripText', this.stripText && truncate);
+    } else if (this._shouldUseNativeTextOverflowCSS()) {
+      this.set('_lineClampClass', truncate ? SINGLE_LINE_CLAMP_CLASS : '');
+      this.set('_stripText', this.stripText && truncate);
+    }
+
+    this._onToggleTruncate();
   },
 
   /**

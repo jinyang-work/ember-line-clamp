@@ -103,6 +103,21 @@ Default: `false`
 }}
 ```
 
+### `truncate`
+
+Some users might not like our style for the component, and they would like to do some fancy stuff. You can use this attribute to control truncation from outside the component and have a button that controls the truncation.
+
+Default: `true`
+
+```handlebars
+{{line-clamp
+  text="A really long text to truncate"
+  interative=false
+  truncate=truncate
+}}
+<button class="super-fancy-style" {{action "toggleTruncate"}}>{{buttonText}}</button>
+```
+
 ### `showMoreButton`
 
 This attribute enables/disables 'See More' functionality

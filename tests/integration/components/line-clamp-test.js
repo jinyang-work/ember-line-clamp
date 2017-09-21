@@ -617,3 +617,37 @@ test('changing the component\'s lines changes the component', function(assert) {
     'helloworld helloworld hellowor... See More'
   );
 });
+
+test('truncation can be controlled via the truncate attribute', function(assert) {
+  assert.expect(3);
+
+  this.set('textToTruncate', 'helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld');
+  this.set('truncate', true);
+
+  this.render(hbs`<div id="test-conatiner" style="width: 300px; font-size: 16px; font-family: sans-serif;">
+    {{line-clamp
+      text=textToTruncate
+      truncate=truncate
+    }}
+  </div>`);
+
+  const element = this.$()[0];
+  assert.equal(
+    element.innerText.trim(),
+    'helloworld helloworld helloworld helloworld hellowor... See More'
+  );
+
+  this.set('truncate', false);
+
+  assert.equal(
+    element.innerText.trim(),
+    'helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld See Less'
+  );
+
+  this.set('truncate', true);
+
+  assert.equal(
+    element.innerText.trim(),
+    'helloworld helloworld helloworld helloworld hellowor... See More'
+  );
+});
