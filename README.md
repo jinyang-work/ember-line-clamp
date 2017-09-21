@@ -89,6 +89,20 @@ Default: `true`
 }}
 ```
 
+### `useJsOnly`
+
+Some users for some unknown reason might like to disable the native CSS solution when available, we want to keep them happy.
+
+Default: `false`
+
+```handlebars
+{{line-clamp
+  text="A really long text to truncate"
+  interative=false
+  useJsOnly=true
+}}
+```
+
 ### `showMoreButton`
 
 This attribute enables/disables 'See More' functionality

@@ -12,8 +12,10 @@ const MORE_CLASS = `${LINE_CLAMP_CLASS}__more`;
  * Generic component used to truncate/clamp text to a specified number of lines
  * @param {String}  text @required Text to be clamped
  * @param {Number}  lines @default 3 Number of lines to clamp
+ * @param {Boolean} stripText @default false Enable stripping <br> tags when using native css line-clamp
  * @param {String}  ellipsis @default '...' Characters to be used as ellipsis
  * @param {Boolean} interactive @default true Enable see more/see less functionality
+ * @param {Boolean} useJsOnly @default false Disable native CSS solution
  * @param {Boolean} showMoreButton @default true
  * @param {Boolean} showLessButton @default true
  * @param {String}  seeMoreText @default 'See More'
@@ -81,6 +83,13 @@ export default Ember.Component.extend({
    * @default true
    */
   interactive: true,
+
+  /**
+   * An override that can be used to skip native CSS solution when available and instead use JS solution
+   * @type {Boolean}
+   * @default false
+   */
+  useJsOnly: false,
 
   /**
    * An override that can be used to hide "see more" interactive element
@@ -319,7 +328,7 @@ export default Ember.Component.extend({
    * @private
    */
   _shouldUseNativeLineClampCSS() {
-    return 'webkitLineClamp' in document.body.style && !this._isInteractive && this.get('lines') > 1;
+    return this.get('useJsOnly') ? false : 'webkitLineClamp' in document.body.style && !this._isInteractive && this.get('lines') > 1;
   },
 
   /**
@@ -329,7 +338,7 @@ export default Ember.Component.extend({
    * @private
    */
   _shouldUseNativeTextOverflowCSS() {
-    return !this._isInteractive && this.get('lines') === 1;
+    return this.get('useJsOnly') ? false : !this._isInteractive && this.get('lines') === 1;
   },
 
   /**

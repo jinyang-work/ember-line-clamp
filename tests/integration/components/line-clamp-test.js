@@ -206,20 +206,58 @@ test('interactive=false hides see more button', function(assert) {
   );
 
   assert.equal(
-    lines.length,
-    0,
-    'No truncation happen, we use -webkit-line-clamp'
-  );
-
-  assert.equal(
     lineClampElement.length,
     1,
     'element fallbacks to -webkit-line-clamp'
   );
 
   assert.equal(
+    lines.length,
+    0,
+    'No truncation happen, we use -webkit-line-clamp'
+  );
+
+  assert.equal(
     element.innerText.trim(),
     'helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld'
+  );
+});
+
+test('useJsOnly=true disables native CSS solution', function(assert) {
+  // Render component
+  this.render(hbs`<div style="width: 300px; font-size: 16px; font-family: sans-serif;">
+    {{line-clamp
+      text="helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld"
+      interactive=false
+      useJsOnly=true
+    }}
+  </div>`);
+
+  // We are running in headless chrome - it supports -webkit-line-clamp
+  const element = this.$()[0];
+  const lineClampElement = element.querySelectorAll('.lt-line-clamp');
+  const lines = Array.from(element.querySelectorAll('.lt-line-clamp__line'));
+
+  assert.ok(
+    element,
+    'line clamp target exists'
+  );
+
+  assert.equal(
+    lineClampElement.length,
+    0,
+    'element fallbacks to -webkit-line-clamp'
+  );
+
+  assert.equal(
+    lines.length,
+    3,
+    'No truncation happen, we use -webkit-line-clamp'
+  );
+
+  assert.equal(
+    element.innerText.trim(),
+    'helloworld helloworld helloworld helloworld helloworld hellowor...'
   );
 });
 
