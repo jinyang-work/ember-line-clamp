@@ -1,6 +1,6 @@
 {
   "name": "ember-line-clamp",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "An ember addon component that provides a line-clamp solution with see more/see less capabilities",
   "keywords": [
     "ember-addon",
