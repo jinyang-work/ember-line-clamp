@@ -590,3 +590,30 @@ test('changing the component\'s text changes the component', function(assert) {
     'helloworld helloworld helloworld helloworld'
   );
 });
+
+test('changing the component\'s lines changes the component', function(assert) {
+  assert.expect(2);
+
+  this.set('textToTruncate', 'helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld');
+  this.set('linesToTruncate', 3);
+
+  this.render(hbs`<div id="test-conatiner" style="width: 300px; font-size: 16px; font-family: sans-serif;">
+    {{line-clamp
+      text=textToTruncate
+      lines=linesToTruncate
+    }}
+  </div>`);
+
+  const element = this.$()[0];
+  assert.equal(
+    element.innerText.trim(),
+    'helloworld helloworld helloworld helloworld hellowor... See More'
+  );
+
+  this.set('linesToTruncate', 2);
+
+  assert.equal(
+    element.innerText.trim(),
+    'helloworld helloworld hellowor... See More'
+  );
+});
