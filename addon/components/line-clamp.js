@@ -141,16 +141,37 @@ export default Ember.Component.extend({
   _truncated: true,
 
   /**
-   * Property that returns a stripped version of the text with no <br> tags
+   * Used to track state and know if text should be stripped
+   * @type {Boolean}
+   * @private
    */
-  _strippedText: '',
+  _stripText: false,
+
+  /**
+   * Property that returns a stripped version of the text with no <br> tags
+   * @type {String}
+   * @private
+   */
+  _strippedText: Ember.computed('text', '_stripText', function getStrippedText() {
+    if (typeof FastBoot === 'undefined') {
+      if (typeof window !== 'undefined' && !!this.element && this.get('_stripText')) {
+        if ((this._shouldUseNativeLineClampCSS() || this._shouldUseNativeTextOverflowCSS())) {
+          return this._stripBrTags(this.get('text'));
+        }
+
+        return '';
+      }
+    }
+
+    return '';
+  }),
 
   /**
    * Property that returns array of lines to render
    * @type {Array}
    * @private
    */
-  _textLines: Ember.computed('lines', 'text', 'targetWidth', '_expanded', function getDisplayText() {
+  _textLines: Ember.computed('lines', 'text', 'targetWidth', '_expanded', function getTextLines() {
     if (typeof FastBoot === 'undefined') {
       const mounted = !!(this.element && this.get('targetWidth'));
       if (typeof window !== 'undefined' && mounted) {
@@ -192,10 +213,10 @@ export default Ember.Component.extend({
     if (this._shouldUseNativeLineClampCSS()) {
       this.set('_lineClampClass', MULTI_LINE_CLAMP_CLASS);
       this.set('_lineClampStyle', Ember.String.htmlSafe(`-webkit-line-clamp: ${this.get('lines')}`));
-      this.stripText && this.set('_strippedText', this._stripBrTags(this.get('text')));
+      this.set('_stripText', this.stripText);
     } else if (this._shouldUseNativeTextOverflowCSS()) {
       this.set('_lineClampClass', SINGLE_LINE_CLAMP_CLASS);
-      this.stripText && this.set('_strippedText', this._stripBrTags(this.get('text')));
+      this.set('_stripText', this.stripText);
     } else {
       const canvas = document.createElement('canvas');
       this.canvasContext = canvas.getContext('2d');
@@ -496,33 +517,37 @@ export default Ember.Component.extend({
     }
   },
 
-  actions: {
-    toggleTruncate() {
-      this.toggleProperty('_expanded');
+  _onToggleTruncate() {
+    this.toggleProperty('_expanded');
 
-      const justExpanded = this.get('_expanded');
+    const justExpanded = this.get('_expanded');
 
-      if (justExpanded) {
-        const onExpand = this.attrs.onExpand;
+    if (justExpanded) {
+      const onExpand = this.attrs.onExpand;
 
-        if (onExpand) {
-          if (typeof onExpand === 'function') {
-            onExpand();
-          } else {
-            this.sendAction('onExpand');
-          }
-        }
-      } else {
-        const onCollapse = this.attrs.onCollapse;
-
-        if (onCollapse) {
-          if (typeof onCollapse === 'function') {
-            onCollapse();
-          } else {
-            this.sendAction('onCollapse');
-          }
+      if (onExpand) {
+        if (typeof onExpand === 'function') {
+          onExpand();
+        } else {
+          this.sendAction('onExpand');
         }
       }
+    } else {
+      const onCollapse = this.attrs.onCollapse;
+
+      if (onCollapse) {
+        if (typeof onCollapse === 'function') {
+          onCollapse();
+        } else {
+          this.sendAction('onCollapse');
+        }
+      }
+    }
+  },
+
+  actions: {
+    toggleTruncate() {
+      this._onToggleTruncate();
     },
   },
 });
