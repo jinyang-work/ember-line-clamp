@@ -169,7 +169,7 @@ export default Ember.Component.extend({
     if (typeof FastBoot === 'undefined') {
       if (typeof window !== 'undefined' && !!this.element && this.get('_stripText')) {
         if ((this._shouldUseNativeLineClampCSS() || this._shouldUseNativeTextOverflowCSS())) {
-          return this._stripBrTags(this.get('text'));
+          return this._stripBrTags(this._unescapeText(this.get('text')));
         }
 
         return '';
@@ -428,11 +428,28 @@ export default Ember.Component.extend({
    * @private
    */
   _stripBrTags(text) {
-    return text.toString().replace(/<br.*?[\/]?>/gi, '');
+    return text.toString().replace(/<br.*?[\/]?>/gi, ' ').replace(/\r\n|\n|\r/g, ' ');
+  },
+
+  /**
+   * This method unescapes the string when escaped
+   * @method _unescapeText
+   * @param {String} text
+   * @private
+   */
+  _unescapeText(text) {
+    const fragment = document.createDocumentFragment();
+    const tempElem = document.createElement('div');
+
+    fragment.appendChild(tempElem);
+    tempElem.innerHTML = text.toString();
+
+    return fragment.firstChild.innerText;
   },
 
   /**
    * This method does the truncation by maipulating the text and creating lines
+   * TODO: Remove mutation on state with textLines in each loop, getting hard to debug
    * @method _getLines
    * @return {Array}
    * @private
@@ -440,9 +457,9 @@ export default Ember.Component.extend({
   _getLines() {
     const lines = [];
     const numLines = this.get('lines');
-    const text = this.get('text');
+    const text = this._unescapeText(this.get('text'));
     const strippedText = this._stripBrTags(text);
-    const textLines = strippedText.split('\n').map(line => line.split(' '));
+    const textLines = strippedText.split('\n').map(line => line.trim().split(' '));
     let didTruncate = true;
 
     const ellipsisWidth = this._getEllipsisWidth();
@@ -452,7 +469,9 @@ export default Ember.Component.extend({
 
       // handle new line -- ???
       if (textWords.length === 0) {
-        lines.push();
+        lines.push({
+          newLine: true,
+        });
         textLines.shift();
         line -= 1;
         continue;
