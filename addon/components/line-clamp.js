@@ -72,11 +72,11 @@ export default Ember.Component.extend({
   lines: 3,
 
   /**
-   * When using native CSS when available user might want text to be stripped from `<br>` tags
+   * An override to the default behavior when clamping text and removing `<br>` tags and `\n` characters.
    * @type {Boolean}
-   * @default false
+   * @default true
    */
-  stripText: false,
+  stripText: true,
 
   /**
    * An override that can be used to hide both seeMore and seeLess interactive elements
@@ -458,7 +458,7 @@ export default Ember.Component.extend({
     const lines = [];
     const numLines = this.get('lines');
     const text = this._unescapeText(this.get('text'));
-    const strippedText = this._stripBrTags(text);
+    const strippedText = this.stripText ? this._stripBrTags(text) : text;
     const textLines = strippedText.split('\n').map(line => line.trim().split(' '));
     let didTruncate = true;
 

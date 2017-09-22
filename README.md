@@ -50,15 +50,15 @@ Default: `3`
 
 ### `stripText`
 
-This attribute allows user to strip text of `<br>` tags when using native CSS solution is available.
+This attribute allows user to prevent stripping text of `<br>` tags when clamping.
 
-Default: `false`
+Default: `true`
 
 ```handlebars
 {{line-clamp
   text="A really long text to truncate"
   lines=2
-  stripText=true
+  stripText=false
 }}
 ```
 

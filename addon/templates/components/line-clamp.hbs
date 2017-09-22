@@ -10,6 +10,8 @@
         </span>
       {{~/if~}}
     </span>
+  {{else if line.newLine}}
+    <br>
   {{else}}
     <span class="lt-line-clamp__line">{{unbound line.text}}</span>
   {{/if}}
