@@ -135,6 +135,20 @@ export default Ember.Component.extend({
   _isInteractive: true,
 
   /**
+   * Property to keep an internal state for showMoreButton and used in the template
+   * @type {Boolean}
+   * @private
+   */
+  _showMoreButton: true,
+
+  /**
+   * Property to keep an internal state for showLessButton and used in the template
+   * @type {Boolean}
+   * @private
+   */
+  _showLessButton: true,
+
+  /**
    * Used to track state of text as expanded or not expanded/collapsed
    * @type {Boolean}
    * @private
@@ -208,14 +222,14 @@ export default Ember.Component.extend({
     this.set('_oldTruncate', this.get('truncate'));
 
     // interative prop overpowers showMoreButton and showLessButton when false
-    this.showMoreButton = this.interactive && this.showMoreButton;
-    this.showLessButton = this.interactive && this.showLessButton;
+    this._showMoreButton = this.interactive && this.showMoreButton;
+    this._showLessButton = this.interactive && this.showLessButton;
 
     // Interativity of the component is driven by showMoreButton value
-    this._isInteractive = this.showMoreButton;
+    this._isInteractive = this._showMoreButton;
 
     // No point in showLessButton true if showMoreButton is false
-    this.showLessButton = this.showMoreButton ? this.showLessButton : false;
+    this._showLessButton = this._showMoreButton ? this._showLessButton : false;
 
     this._getLines = this._getLines.bind(this);
     this.onResize = this.onResize.bind(this);

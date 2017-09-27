@@ -4,7 +4,7 @@
       {{unbound line.text}}
       {{~#if line.needsEllipsis~}}
         <span class="lt-line-clamp__ellipsis">{{unbound ellipsis}}
-          {{#if showMoreButton}}
+          {{#if _showMoreButton}}
             <a href="#" class="lt-line-clamp__more" {{action "toggleTruncate"}}>{{unbound seeMoreText}}</a>
           {{/if}}
         </span>
@@ -21,7 +21,7 @@
   {{text}}
 {{/each}}
 
-{{#if showLessButton}}
+{{#if _showLessButton}}
   {{#unless _truncated}}
     {{#if _expanded}}
       <span><a href="#" class="lt-line-clamp__less" {{action "toggleTruncate"}}>{{unbound seeLessText}}</a></span>
