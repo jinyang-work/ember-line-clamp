@@ -491,19 +491,18 @@ export default Ember.Component.extend({
         continue;
       }
 
-      const resultLine = {
-        text: textWords.join(' '),
-      };
+      const resultLine = textWords.join(' ');
 
-      if (this._measureWidth(resultLine.text) <= this.targetWidth) {
+      if (this._measureWidth(resultLine) <= this.targetWidth) {
         if (textLines.length === 1) {
           // Line is end of text and fits without truncating
           didTruncate = false;
 
-          lines.push(Object.assign({}, resultLine, {
+          lines.push({
+            text: resultLine,
             lastLine: true,
             needsEllipsis: false,
-          }));
+          });
           break;
         }
       }
@@ -527,12 +526,12 @@ export default Ember.Component.extend({
           }
         }
 
-        // Object.assign and lines.push
-        lines.push(Object.assign({}, resultLine, {
+        // Add line - last
+        lines.push({
           text: textRest.slice(0, lower),
           lastLine: true,
           needsEllipsis: true,
-        }));
+        });
       } else {
         // Binary search determining when the line breaks
         let lower = 0;
@@ -557,10 +556,10 @@ export default Ember.Component.extend({
           continue;
         }
 
-        // Object.assign and lines.push
-        lines.push(Object.assign({}, resultLine, {
+        // Add line
+        lines.push({
           text: textWords.slice(0, lower).join(' '),
-        }));
+        });
         textLines[0].splice(0, lower);
       }
     }
