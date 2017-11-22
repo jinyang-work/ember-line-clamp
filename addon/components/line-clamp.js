@@ -9,6 +9,21 @@ const ELLIPSIS_DUMMY_CLASS = `${ELLIPSIS_CLASS}--dummy`;
 const MORE_CLASS = `${LINE_CLAMP_CLASS}__more`;
 
 /**
+ * Ember.Handlebars.Utils.escapeExpression has not unescapeExpression equivalent
+ * hence I have unescape the text myself.
+ */
+const R_ENTITIES = /&(?:([a-z0-9]+)|#x([\da-f]{1,6})|#(\d{1,8}));/ig;
+const HTML_ENTITIES_TO_CHARS = {
+  '&amp;': '&',
+  '&lt;': '<',
+  '&gt;': '>',
+  '&quot;': '"',
+  '&#x27;': "'",
+  '&#x60;': '`',
+  '&#x3D;': '='
+};
+
+/**
  * Generic component used to truncate/clamp text to a specified number of lines
  * @param {String}  text @required Text to be clamped
  * @param {Number}  lines @default 3 Number of lines to clamp
@@ -447,18 +462,13 @@ export default Ember.Component.extend({
 
   /**
    * This method unescapes the string when escaped
+   * Ember.Handlebars.Utils.escapeExpression has not unescapeExpression equivalent
    * @method _unescapeText
    * @param {String} text
    * @private
    */
   _unescapeText(text) {
-    const fragment = document.createDocumentFragment();
-    const tempElem = document.createElement('div');
-
-    fragment.appendChild(tempElem);
-    tempElem.innerHTML = text.toString();
-
-    return fragment.firstChild.innerText;
+    return text.toString().replace(R_ENTITIES, match => HTML_ENTITIES_TO_CHARS[match]);
   },
 
   /**
