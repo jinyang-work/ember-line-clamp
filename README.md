@@ -85,7 +85,7 @@ Default: `true`
 ```handlebars
 {{line-clamp
   text="A really long text to truncate"
-  interative=false
+  interactive=false
 }}
 ```
 
