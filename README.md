@@ -98,7 +98,7 @@ Default: `false`
 ```handlebars
 {{line-clamp
   text="A really long text to truncate"
-  interative=false
+  interactive=false
   useJsOnly=true
 }}
 ```
@@ -112,7 +112,7 @@ Default: `true`
 ```handlebars
 {{line-clamp
   text="A really long text to truncate"
-  interative=false
+  interactive=false
   truncate=truncate
 }}
 <button class="super-fancy-style" {{action "toggleTruncate"}}>{{buttonText}}</button>
