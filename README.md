@@ -209,33 +209,9 @@ This attribuet allows you to pass an action/closure to trigger everytime the tex
 }}
 ```
 
-## Contributing
-
-* `git clone <repository-url>` this repository
-* `cd ember-line-clamp`
-* `npm install`
-
-## Running
-
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
-
-## Running Tests
-
-* `npm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
-
-## Building
-
-* `ember build`
-
-For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
-
 ## Dev TODOs
 
 - [ ] demo page
-- [ ] test cases
 - [ ] support block form
 
 ## Thanks
