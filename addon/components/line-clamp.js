@@ -24,6 +24,22 @@ const HTML_ENTITIES_TO_CHARS = {
 };
 
 /**
+ * Function to enescape entity
+ * Note that we might need to convert to hex from dec entity
+ *
+ * @param {String} entity
+ * @return {String}
+ */
+// function unescape(entity) {
+//   return HTML_ENTITIES_TO_CHARS[entity] ||
+//     HTML_ENTITIES_TO_CHARS[entity.replace(
+//       /([0-9]+)/gi,
+//       m => `x${(+m).toString(16)}`
+//     )] ||
+//     entity;
+// }
+
+/**
  * Generic component used to truncate/clamp text to a specified number of lines
  * @param {String}  text @required Text to be clamped
  * @param {Number}  lines @default 3 Number of lines to clamp
@@ -468,7 +484,14 @@ export default Ember.Component.extend({
    * @private
    */
   _unescapeText(text) {
-    return text.toString().replace(R_ENTITIES, match => HTML_ENTITIES_TO_CHARS[match]);
+    return text.toString().replace(R_ENTITIES, match =>
+      HTML_ENTITIES_TO_CHARS[match] ||
+      HTML_ENTITIES_TO_CHARS[match.replace(
+        /([0-9]+)/gi,
+        m => `x${(+m).toString(16)}`
+      )] ||
+      match
+    );
   },
 
   /**
