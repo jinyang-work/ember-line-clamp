@@ -309,16 +309,11 @@ export default Ember.Component.extend({
   },
 
   onResize() {
-    // if (this._scheduledResizeAnimationFrame) {
-    //   window.cancelAnimationFrame(this._scheduledResizeAnimationFrame);
-    // }
-
-    // this._scheduledResizeAnimationFrame = window.requestAnimationFrame(this._calculateTargetWidth);
-
-    if (!this.working) {
-      this._scheduledResizeAnimationFrame = window.requestAnimationFrame(this._calculateTargetWidth);
-      this.working = true;
+    if (this._scheduledResizeAnimationFrame) {
+      window.cancelAnimationFrame(this._scheduledResizeAnimationFrame);
     }
+
+    this._scheduledResizeAnimationFrame = window.requestAnimationFrame(this._calculateTargetWidth);
   },
 
   onTruncate(didTruncate) {
@@ -599,8 +594,6 @@ export default Ember.Component.extend({
     }
 
     this.onTruncate(didTruncate);
-
-    this.working = false;
 
     return lines;
   },
