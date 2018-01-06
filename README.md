@@ -17,7 +17,7 @@ This Ember addon provides a component for truncating/clamping text.
 
 ## Demo
 
-Demo application **coming soon**
+Demo application [here](https://lstrrs.github.io/ember-line-clamp-website/)
 
 ## Usage
 
@@ -211,7 +211,8 @@ This attribuet allows you to pass an action/closure to trigger everytime the tex
 
 ## Dev TODOs
 
-- [ ] demo page
+- [x] tests
+- [x] demo page
 - [ ] support block form
 
 ## Thanks
