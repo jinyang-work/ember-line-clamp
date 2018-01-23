@@ -500,8 +500,9 @@ export default Ember.Component.extend({
   _getLines() {
     const lines = [];
     const numLines = this.get('lines');
-    const text = this._unescapeText(this.get('text'));
-    const strippedText = this.stripText ? this._stripBrTags(text) : text;
+    const text = this.get('text');
+    const textToTruncate = Ember.String.isHTMLSafe(text) ? this._unescapeText(text) : text;
+    const strippedText = this.stripText ? this._stripBrTags(textToTruncate) : textToTruncate;
     const textLines = strippedText.split('\n').map(line => line.trim().split(' '));
     let didTruncate = true;
 
