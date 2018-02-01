@@ -1,5 +1,8 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
 import layout from '../templates/components/line-clamp';
+import { computed } from '@ember/object';
+import { htmlSafe, isHTMLSafe } from '@ember/string';
 
 const LINE_CLAMP_CLASS = 'lt-line-clamp';
 const SINGLE_LINE_CLAMP_CLASS = `${LINE_CLAMP_CLASS} ${LINE_CLAMP_CLASS}--single-line`;
@@ -64,10 +67,10 @@ const HTML_ENTITIES_TO_CHARS = {
  *
  * @class LineClampComponent
  */
-export default Ember.Component.extend({
+export default Component.extend({
   layout,
 
-  unifiedEventHandler: Ember.inject.service(),
+  unifiedEventHandler: inject(),
 
   componentName: 'LineClamp',
 
@@ -211,7 +214,7 @@ export default Ember.Component.extend({
    * @type {String}
    * @private
    */
-  _strippedText: Ember.computed('text', '_stripText', function getStrippedText() {
+  _strippedText: computed('text', '_stripText', function getStrippedText() {
     if (typeof FastBoot === 'undefined') {
       if (typeof window !== 'undefined' && !!this.element && this.get('_stripText')) {
         if ((this._shouldUseNativeLineClampCSS() || this._shouldUseNativeTextOverflowCSS())) {
@@ -230,7 +233,7 @@ export default Ember.Component.extend({
    * @type {Array}
    * @private
    */
-  _textLines: Ember.computed('lines', 'text', 'targetWidth', '_expanded', function getTextLines() {
+  _textLines: computed('lines', 'text', 'targetWidth', '_expanded', function getTextLines() {
     if (typeof FastBoot === 'undefined') {
       const mounted = !!(this.element && this.get('targetWidth'));
       if (typeof window !== 'undefined' && mounted) {
@@ -280,7 +283,7 @@ export default Ember.Component.extend({
   didInsertElement() {
     if (this._shouldUseNativeLineClampCSS()) {
       this.set('_lineClampClass', MULTI_LINE_CLAMP_CLASS);
-      this.set('_lineClampStyle', Ember.String.htmlSafe(`-webkit-line-clamp: ${this.get('lines')}`));
+      this.set('_lineClampStyle', htmlSafe(`-webkit-line-clamp: ${this.get('lines')}`));
       this.set('_stripText', this.stripText);
     } else if (this._shouldUseNativeTextOverflowCSS()) {
       this.set('_lineClampClass', SINGLE_LINE_CLAMP_CLASS);
@@ -319,12 +322,12 @@ export default Ember.Component.extend({
   onTruncate(didTruncate) {
     this._handleTruncate(didTruncate);
 
-    const handleTruncate = this.attrs.handleTruncate;
+    const handleTruncate = this.getAttr('handleTruncate');
     if (handleTruncate) {
       if (typeof handleTruncate === 'function') {
         handleTruncate(didTruncate);
       } else {
-        this.sendAction('handleTruncate', didTruncate);
+        this.sendAction('handleTruncate', didTruncate); // eslint-disable-line
       }
     }
   },
@@ -332,7 +335,7 @@ export default Ember.Component.extend({
   _handleNewTruncateAttr(truncate) {
     if (this._shouldUseNativeLineClampCSS()) {
       this.set('_lineClampClass', truncate ? MULTI_LINE_CLAMP_CLASS : '');
-      this.set('_lineClampStyle', truncate ? Ember.String.htmlSafe(`-webkit-line-clamp: ${this.get('lines')}`) : Ember.String.htmlSafe(''));
+      this.set('_lineClampStyle', truncate ? htmlSafe(`-webkit-line-clamp: ${this.get('lines')}`) : htmlSafe(''));
       this.set('_stripText', this.stripText && truncate);
     } else if (this._shouldUseNativeTextOverflowCSS()) {
       this.set('_lineClampClass', truncate ? SINGLE_LINE_CLAMP_CLASS : '');
@@ -469,7 +472,7 @@ export default Ember.Component.extend({
    * @private
    */
   _stripBrTags(text) {
-    return text.toString().replace(/<br.*?[\/]?>/gi, ' ').replace(/\r\n|\n|\r/g, ' ');
+    return text.toString().replace(/<br.*?[/]?>/gi, ' ').replace(/\r\n|\n|\r/g, ' ');
   },
 
   /**
@@ -501,7 +504,7 @@ export default Ember.Component.extend({
     const lines = [];
     const numLines = this.get('lines');
     const text = this.get('text');
-    const textToTruncate = Ember.String.isHTMLSafe(text) ? this._unescapeText(text) : text;
+    const textToTruncate = isHTMLSafe(text) ? this._unescapeText(text) : text;
     const strippedText = this.stripText ? this._stripBrTags(textToTruncate) : textToTruncate;
     const textLines = strippedText.split('\n').map(line => line.trim().split(' '));
     let didTruncate = true;
@@ -618,23 +621,23 @@ export default Ember.Component.extend({
     const justExpanded = this.get('_expanded');
 
     if (justExpanded) {
-      const onExpand = this.attrs.onExpand;
+      const onExpand = this.getAttr('onExpand');
 
       if (onExpand) {
         if (typeof onExpand === 'function') {
           onExpand();
         } else {
-          this.sendAction('onExpand');
+          this.sendAction('onExpand'); // eslint-disable-line
         }
       }
     } else {
-      const onCollapse = this.attrs.onCollapse;
+      const onCollapse = this.getAttr('onCollapse');
 
       if (onCollapse) {
         if (typeof onCollapse === 'function') {
           onCollapse();
         } else {
-          this.sendAction('onCollapse');
+          this.sendAction('onCollapse'); // eslint-disable-line
         }
       }
     }
