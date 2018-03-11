@@ -644,7 +644,14 @@ export default Component.extend({
   },
 
   actions: {
-    toggleTruncate() {
+    /**
+     * We use a closure action to prevent closure actions on containing elements from being called
+     * @param {Object} event
+     */
+    toggleTruncate(event) {
+      event.preventDefault();
+      event.stopPropagation();
+
       this._onToggleTruncate();
     },
   },

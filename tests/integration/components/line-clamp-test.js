@@ -566,6 +566,51 @@ test('clicking see more/see less button fires user defined action', function(ass
   seeLessButton.click();
 });
 
+test('clicking see more/see less buttons should not bubble event', function(assert) {
+  assert.expect(3);
+
+  this.on('assertOnParentAction', () => assert.ok(true, 'parent action should not be triggered'));
+  this.on('assertOnParentClick', () => assert.ok(true, 'parent click action should not be triggered'));
+
+  this.render(hbs`
+    <div
+      id="test-conatiner"
+      style="width: 300px; font-size: 16px; font-family: sans-serif;"
+      {{action "assertOnParentAction"}}
+      onclick={{action "assertOnParentClick"}}
+      >
+      {{line-clamp
+        text="helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld"
+      }}
+    </div>
+  `);
+
+  const element = this.$()[0];
+  const seeMoreButton = element.querySelectorAll('.lt-line-clamp__line .lt-line-clamp__more');
+
+  assert.ok(
+    element,
+    'line clamp target exists'
+  );
+
+  assert.equal(
+    seeMoreButton.length,
+    1,
+    'see more button exists'
+  );
+
+  seeMoreButton[0].click();
+
+  const seeLessButton = element.querySelectorAll('.lt-line-clamp__less')[0];
+
+  assert.ok(
+    seeLessButton,
+    'see less button exists'
+  );
+
+  seeLessButton.click();
+});
+
 test('changing the component\'s text changes the component', function(assert) {
   assert.expect(2);
 
