@@ -1,5 +1,6 @@
 import { moduleForComponent, test, skip } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import { htmlSafe } from '@ember/string';
 
 moduleForComponent('line-clamp', 'Integration | Component | line clamp', {
   integration: true
@@ -694,5 +695,71 @@ test('truncation can be controlled via the truncate attribute', function(assert)
   assert.equal(
     element.innerText.trim(),
     'helloworld helloworld helloworld helloworld hellowor... See More'
+  );
+});
+
+test('stripText correctly strips <br> tags', function(assert) {
+  assert.expect(2);
+
+  this.set('textToTruncate', htmlSafe('helloworld<br />helloworld<br />helloworld<br />helloworld'));
+  this.set('truncate', true);
+  this.set('stripText', true);
+
+  this.render(hbs`<div id="test-conatiner" style="width: 300px; font-size: 16px; font-family: sans-serif;">
+    {{line-clamp
+      truncate=truncate
+      text=textToTruncate
+      stripText=stripText
+    }}
+  </div>`);
+
+  const element = this.$()[0];
+  assert.equal(
+    element.innerText.trim(),
+    'helloworld helloworld helloworld helloworld'
+  );
+
+  this.set('truncate', false);
+
+  assert.equal(
+    element.innerText.trim(),
+    `helloworld
+helloworld
+helloworld
+helloworld See Less`
+  );
+});
+
+test('stripText correctly strips preserves newlines when stripText is false', function(assert) {
+  assert.expect(2);
+
+  this.set('textToTruncate', htmlSafe('helloworld<br />helloworld<br />helloworld<br />helloworld'));
+  this.set('truncate', true);
+  this.set('stripText', false);
+
+  this.render(hbs`<div id="test-conatiner" style="width: 300px; font-size: 16px; font-family: sans-serif;">
+    {{line-clamp
+      truncate=truncate
+      text=textToTruncate
+      stripText=stripText
+    }}
+  </div>`);
+
+  const element = this.$()[0];
+  assert.equal(
+    element.innerText.trim(),
+    `helloworld 
+helloworld 
+hellowor... See More`
+  );
+
+  this.set('truncate', false);
+
+  assert.equal(
+    element.innerText.trim(),
+    `helloworld
+helloworld
+helloworld
+helloworld See Less`
   );
 });
