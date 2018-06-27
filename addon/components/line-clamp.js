@@ -476,6 +476,16 @@ export default Component.extend({
   },
 
   /**
+   * This method converts `<br>` tags in the text to newline characters
+   * @method _stripBrTags
+   * @param {String} text
+   * @private
+   */
+  _convertBrTags(text) {
+    return text.toString().replace(/<br.*?[/]?>/gi, '\n');
+  },
+
+  /**
    * This method unescapes the string when escaped
    * Ember.Handlebars.Utils.escapeExpression has not unescapeExpression equivalent
    * @method _unescapeText
@@ -505,8 +515,8 @@ export default Component.extend({
     const numLines = this.get('lines');
     const text = this.get('text');
     const textToTruncate = isHTMLSafe(text) ? this._unescapeText(text) : text;
-    const strippedText = this.stripText ? this._stripBrTags(textToTruncate) : textToTruncate;
-    const textLines = strippedText.split('\n').map(line => line.trim().split(' '));
+    const formattedText = this.stripText ? this._stripBrTags(textToTruncate) : this._convertBrTags(textToTruncate);
+    const textLines = formattedText.split('\n').map(line => line.trim().split(' '));
     let didTruncate = true;
 
     const ellipsisWidth = this._getEllipsisWidth();
