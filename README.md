@@ -78,7 +78,7 @@ Default: `...`
 
 ### `interactive`
 
-Line clamp is not always interactive, in fact if you use `-webkit-line-clamp` there is not interqaction enabled. This attribute allows you to enable see more/see less functionality and overpowers `showMoreButton` and `showLessButton` when `false`. In cases where you do not want any interaction `-webkit-line-clamp` is used in the background to save work.
+Line clamp is not always interactive, in fact if you use `-webkit-line-clamp` there is not interaction enabled. This attribute allows you to enable see more/see less functionality and overpowers `showMoreButton` and `showLessButton` when `false`. In cases where you do not want any interaction `-webkit-line-clamp` is used in the background to save work.
 
 Default: `true`
 
