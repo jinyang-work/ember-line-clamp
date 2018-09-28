@@ -11,7 +11,7 @@ This Ember addon provides a component for truncating/clamping text.
 
 * Note: This component currently does not support block form.
 
-## Intallation
+## Installation
 
 * `npm install ember-line-clamp`
 
@@ -72,7 +72,7 @@ Default: `...`
 {{line-clamp
   text="A really long text to truncate"
   lines=2
-  ellipsis="~"
+  ellipsis="..."
 }}
 ```
 
@@ -86,20 +86,6 @@ Default: `true`
 {{line-clamp
   text="A really long text to truncate"
   interactive=false
-}}
-```
-
-### `useJsOnly`
-
-Some users for some unknown reason might like to disable the native CSS solution when available, we want to keep them happy.
-
-Default: `false`
-
-```handlebars
-{{line-clamp
-  text="A really long text to truncate"
-  interactive=false
-  useJsOnly=true
 }}
 ```
 
@@ -175,7 +161,7 @@ Default: `See Less`
 
 ### `onExpand`
 
-This attribuet allows you to pass an action/closure to trigger when text is expanded
+This attribute allows you to pass an action/closure to trigger when text is expanded
 
 ```handlebars
 {{line-clamp
@@ -186,7 +172,7 @@ This attribuet allows you to pass an action/closure to trigger when text is expa
 
 ### `onCollapse`
 
-This attribuet allows you to pass an action/closure to trigger when text is collapsed
+This attribute allows you to pass an action/closure to trigger when text is collapsed
 
 ```handlebars
 {{line-clamp
@@ -196,17 +182,51 @@ This attribuet allows you to pass an action/closure to trigger when text is coll
 }}
 ```
 
-### `handleTruncate`
+### `useJsOnly`
 
-This attribuet allows you to pass an action/closure to trigger everytime the text goes through the truncation procedure, receives a boolean to determine if text was truncated
+This attribute allows you to ensure `handleTruncate` is called all the time. The caveat is the browser native CSS solutions will never be used. Note: When the browser native CSS solutions are used, `handleTruncate` is never called.
+
+Default: `false`
 
 ```handlebars
 {{line-clamp
   text="A really long text to truncate"
-  onExpand=doSomethingWhenTextIsExpanded
-  onCollapse=(action "doSomethingWhenTextIsCollapsed")
+  useJsOnly=true
   handleTruncate=(action "onHandleTruncate")
 }}
+```
+
+### `handleTruncate`
+
+This attribute allows you to pass an action/closure to trigger every time the text goes through the truncation process, receives a boolean to determine if the text was truncated. Not called when the browser native CSS solutions are used.
+
+```handlebars
+{{line-clamp
+  text="A really long text to truncate"
+  handleTruncate=(action "onHandleTruncate")
+}}
+```
+
+Note: Will not execute when the native CSS line-clamp is used because there is no good way currently to tell whether the browser actually truncated the text or not. If you need `handleTruncate` to run all the time, please enable `useJsOnly`.
+
+```handlebars
+{{line-clamp
+  text="A really long text to truncate"
+  useJsOnly=true
+  handleTruncate=(action "onHandleTruncate")
+}}
+```
+
+Then create an action that gets notified after the text is truncated. When the text is truncated and ellipsis applied, `didTruncate` will be `true`. When the text isn't truncated, `didTruncate` will be `false`. 
+
+```handlebars
+actions: {
+  onHandleTruncate(didTruncate) {
+    if(didTruncate) {
+      this.set('someProperty', true);
+    }
+  }
+}
 ```
 
 ## Dev TODOs
@@ -220,4 +240,3 @@ This attribuet allows you to pass an action/closure to trigger everytime the tex
 * [CSS Line Clamping](http://guerillalabs.co/blog/css-line-clamping.html) article
 * [@nilsynils](https://github.com/nilsynils) for his [Medium Post](https://medium.com/mofed/css-line-clamp-the-good-the-bad-and-the-straight-up-broken-865413f16e5)
 * [@One-com](https://github.com/One-com) for a [inspiration](https://github.com/One-com/react-truncate)
-
