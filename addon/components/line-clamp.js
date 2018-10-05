@@ -51,7 +51,6 @@ const HTML_ENTITIES_TO_CHARS = {
  * @param {Boolean} stripText @default false Enable stripping <br> tags when using native css line-clamp
  * @param {String}  ellipsis @default '...' Characters to be used as ellipsis
  * @param {Boolean} interactive @default true Enable see more/see less functionality
- * @param {Boolean} useJsOnly @default false Disable native CSS solution
  * @param {Boolean} truncate @default true Allow managing truncation from outside component
  * @param {Boolean} showMoreButton @default true
  * @param {Boolean} showLessButton @default true
@@ -59,7 +58,8 @@ const HTML_ENTITIES_TO_CHARS = {
  * @param {String}  seeLessText @default 'See Less'
  * @param {Action}  onExpand Action triggered when text is expanded
  * @param {Action}  onCollapse Action triggered when text is collapsed
- * @param {Action}  handleTruncate Action triggered every time text does get truncated/clamped
+ * @param {Boolean} useJsOnly @default false Disables native CSS solution
+ * @param {Action}  handleTruncate @returns {boolean} didTruncate Action triggered every time text goes true truncation process. Only called when native CSS solution isn't used. If didTruncate is true, text truncated and ellipsis applied.
  *
  * @example
  * ```
