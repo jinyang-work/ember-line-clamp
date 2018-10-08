@@ -353,22 +353,24 @@ export default Component.extend({
    * @private
    */
   _calculateTargetWidth() {
-    const targetWidth = this.element.getBoundingClientRect().width;
+    if (this.element) {
+      const targetWidth = this.element.getBoundingClientRect().width;
 
-    if (!targetWidth) {
-      return window.requestAnimationFrame(this._calculateTargetWidth);
+      if (!targetWidth) {
+        return window.requestAnimationFrame(this._calculateTargetWidth);
+      }
+
+      const style = window.getComputedStyle(this.element);
+      const font = [
+        style['font-weight'],
+        style['font-style'],
+        style['font-size'],
+        style['font-family']
+      ].join(' ');
+
+      this.canvasContext.font = font;
+      this.set('targetWidth', targetWidth);
     }
-
-    const style = window.getComputedStyle(this.element);
-    const font = [
-      style['font-weight'],
-      style['font-style'],
-      style['font-size'],
-      style['font-family']
-    ].join(' ');
-
-    this.canvasContext.font = font;
-    this.set('targetWidth', targetWidth);
   },
 
   /**
