@@ -255,8 +255,6 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    this.set('_oldTruncate', this.get('truncate'));
-
     // interative prop overpowers showMoreButton and showLessButton when false
     this._showMoreButton = this.interactive && this.showMoreButton;
     this._showLessButton = this.interactive && this.showLessButton;
