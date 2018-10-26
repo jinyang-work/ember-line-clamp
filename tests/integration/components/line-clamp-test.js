@@ -68,7 +68,7 @@ test('inline form works as expeted', function(assert) {
   );
 
   assert.equal(
-    ellipsisElement.innerText,
+    ellipsisElement.innerText.trim(),
     '... See More',
     'Ellipsis element contains expetend ellipsis and see more text'
   );
@@ -176,7 +176,7 @@ test('ellipsis attribute works as expected', function(assert) {
   );
 
   assert.equal(
-    ellipsisElement.innerText,
+    ellipsisElement.innerText.trim(),
     '- See More',
     'Ellipsis element contains expetend ellipsis and see more text'
   );
@@ -698,6 +698,40 @@ test('truncation can be controlled via the truncate attribute', function(assert)
   );
 });
 
+test('initial truncation can be controlled via the truncate attribute (false case)', function (assert) {
+  assert.expect(3);
+
+  this.set('textToTruncate', 'helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld');
+  this.set('truncate', false);
+
+  this.render(hbs`<div id="test-conatiner" style="width: 300px; font-size: 16px; font-family: sans-serif;">
+    {{line-clamp
+      text=textToTruncate
+      truncate=truncate
+    }}
+  </div>`);
+
+  const element = this.$()[0];
+  assert.equal(
+    element.innerText.trim(),
+    'helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld See Less'
+  );
+
+  this.set('truncate', false);
+
+  assert.equal(
+    element.innerText.trim(),
+    'helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld See Less'
+  );
+
+  this.set('truncate', true);
+
+  assert.equal(
+    element.innerText.trim(),
+    'helloworld helloworld helloworld helloworld hellowor... See More'
+  );
+});
+
 test('stripText correctly strips <br> tags', function(assert) {
   assert.expect(2);
 
@@ -748,8 +782,8 @@ test('stripText correctly strips preserves newlines when stripText is false', fu
   const element = this.$()[0];
   assert.equal(
     element.innerText.trim(),
-    `helloworld 
-helloworld 
+    `helloworld
+helloworld
 hellowor... See More`
   );
 
