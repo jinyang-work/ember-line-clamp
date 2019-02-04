@@ -23,3 +23,7 @@
   /*! autoprefixer: on */
   text-overflow: ellipsis;
 }
+
+.lt-line-clamp__raw-line {
+  white-space: pre-line;
+}
