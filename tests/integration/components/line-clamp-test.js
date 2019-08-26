@@ -797,3 +797,29 @@ helloworld
 helloworld See Less`
   );
 });
+
+test('null/undefined text handled correctly', function(assert) {
+  assert.expect(2);
+
+  this.set('textToTruncate', null);
+  this.set('truncate', true);
+
+  this.render(hbs`
+    {{line-clamp
+      truncate=truncate
+      text=textToTruncate
+    }}`);
+
+  const element = this.$()[0];
+  assert.equal(
+    element.innerText.trim(),
+    ''
+  );
+
+  this.set('textToTruncate', undefined);
+
+  assert.equal(
+    element.innerText.trim(),
+    ''
+  );
+});

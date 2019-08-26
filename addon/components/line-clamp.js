@@ -219,7 +219,7 @@ export default Component.extend({
     if (typeof FastBoot === 'undefined') {
       if (typeof window !== 'undefined' && !!this.element && this.get('_stripText')) {
         if ((this._shouldUseNativeLineClampCSS() || this._shouldUseNativeTextOverflowCSS())) {
-          return this._stripBrTags(this._unescapeText(this.get('text')));
+          return this._stripBrTags(this._unescapeText(this.get('text') || ''));
         }
 
         return '';
@@ -478,7 +478,7 @@ export default Component.extend({
 
   /**
    * This method converts `<br>` tags in the text to newline characters
-   * @method _stripBrTags
+   * @method _convertBrTags
    * @param {String} text
    * @private
    */
@@ -514,7 +514,7 @@ export default Component.extend({
   _getLines() {
     const lines = [];
     const numLines = this.get('lines');
-    const text = this.get('text');
+    const text = this.get('text') || '';
     const textToTruncate = isHTMLSafe(text) ? this._unescapeText(text) : text;
     const formattedText = this.stripText ? this._stripBrTags(textToTruncate) : this._convertBrTags(textToTruncate);
     const textLines = formattedText.split('\n').map(line => line.trim().split(' '));
