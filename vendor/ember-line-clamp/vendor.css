@@ -17,10 +17,9 @@
 }
 
 .lt-line-clamp--multi-line {
-  display: -webkit-box;
   /*! autoprefixer: off */
+  display: -webkit-box;
   -webkit-box-orient: vertical;
-  /*! autoprefixer: on */
   text-overflow: ellipsis;
 }
 
