@@ -14,7 +14,6 @@ module('Integration | Component | line clamp', function(hooks) {
       }}
     </div>`);
 
-    assert.dom()
     const element = this.element;
     const lines = Array.from(element.querySelectorAll('.lt-line-clamp__line'));
     const lastLine = lines[lines.length - 1];
