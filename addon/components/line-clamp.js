@@ -3,6 +3,7 @@ import { inject } from '@ember/service';
 import layout from '../templates/components/line-clamp';
 import { computed } from '@ember/object';
 import { htmlSafe, isHTMLSafe } from '@ember/string';
+import { mutateDOM } from 'ember-batcher';
 
 const LINE_CLAMP_CLASS = 'lt-line-clamp';
 const SINGLE_LINE_CLAMP_CLASS = `${LINE_CLAMP_CLASS} ${LINE_CLAMP_CLASS}--single-line`;
@@ -419,7 +420,7 @@ export default Component.extend({
   _createDummyEllipsisElement() {
     this.dummyEllipsisElement = document.createElement('span');
     this.dummyEllipsisElement.className = `${ELLIPSIS_CLASS} ${ELLIPSIS_DUMMY_CLASS}`;
-    this.dummyEllipsisElement.innerHTML = this._isInteractive ? `${this.ellipsis} <a class="${MORE_CLASS}" href="#">${this.seeMoreText}</a>` : this.ellipsis;
+    this.dummyEllipsisElement.innerHTML = this._isInteractive ? `${this.ellipsis} <a class="${MORE_CLASS}" href="#" role="button">${this.seeMoreText}</a>` : this.ellipsis;
   },
 
   /**
@@ -632,6 +633,12 @@ export default Component.extend({
     const justExpanded = this.get('_expanded');
 
     if (justExpanded) {
+      mutateDOM(() => {
+        const showLessButton = this.element.querySelector('#line-clamp-show-less-button');
+        if (showLessButton) {
+          showLessButton.focus();
+        }
+      });
       const onExpand = this.getAttr('onExpand');
 
       if (onExpand) {
@@ -642,6 +649,13 @@ export default Component.extend({
         }
       }
     } else {
+      mutateDOM(() => {
+        const showMoreButton = this.element.querySelector('#line-clamp-show-more-button');
+        if (showMoreButton) {
+          showMoreButton.focus();
+        }
+      });
+
       const onCollapse = this.getAttr('onCollapse');
 
       if (onCollapse) {

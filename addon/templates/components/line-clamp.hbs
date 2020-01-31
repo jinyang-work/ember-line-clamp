@@ -5,7 +5,7 @@
       {{~#if line.needsEllipsis~}}
         <span class="lt-line-clamp__ellipsis">{{unbound ellipsis}}
           {{#if _showMoreButton}}
-            <a href="#" aria-expanded=false class="lt-line-clamp__more" onclick={{action "toggleTruncate"}}>{{unbound seeMoreText}}</a>
+            <a data-test-line-clamp-show-more-button="true" href="#" role="button" id="line-clamp-show-more-button" aria-expanded="false" class="lt-line-clamp__more" onclick={{action "toggleTruncate"}}>{{unbound seeMoreText}}</a>
           {{/if}}
         </span>
       {{~/if~}}
@@ -24,7 +24,7 @@
 {{#if _showLessButton}}
   {{#unless _truncated}}
     {{#if _expanded}}
-      <span><a href="#" aria-expanded=true class="lt-line-clamp__less" onclick={{action "toggleTruncate"}}>{{unbound seeLessText}}</a></span>
+      <span><a data-test-line-clamp-show-less-button="true" id="line-clamp-show-less-button"  href="#" role="button" aria-expanded="true" class="lt-line-clamp__less" onclick={{action "toggleTruncate"}}>{{unbound seeLessText}}</a></span>
     {{/if}}
   {{/unless}}
 {{/if}}
