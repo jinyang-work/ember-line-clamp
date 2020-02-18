@@ -2,12 +2,12 @@ import hbs from 'htmlbars-inline-precompile';
 import { htmlSafe } from '@ember/string';
 import { module, test, skip } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, click } from '@ember/test-helpers';
 
 module('Integration | Component | line clamp', function(hooks) {
   setupRenderingTest(hooks);
 
-  test('inline form works as expeted', async function(assert) {
+  test('inline form works as expected', async function(assert) {
     await render(hbs`<div style="width: 300px; font-size: 16px; font-family: sans-serif;">
       {{line-clamp
         text="helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld"
@@ -68,11 +68,7 @@ module('Integration | Component | line clamp', function(hooks) {
       'ellipsis element contains right CSS class'
     );
 
-    assert.equal(
-      ellipsisElement.innerText.trim(),
-      '... See More',
-      'Ellipsis element contains expetend ellipsis and see more text'
-    );
+    assert.dom(ellipsisElement).hasText('... See More', 'Ellipsis element contains expetend ellipsis and see more text');
 
     assert.ok(
       seeMoreButton,
@@ -95,12 +91,9 @@ module('Integration | Component | line clamp', function(hooks) {
       'dummy ellipsis element exists'
     );
 
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld helloworld helloworld hellowor... See More'
-    );
+    assert.dom(element).containsText('... See More');
 
-    seeMoreButton.click();
+    await click(seeMoreButton);
 
     const seeLessButton = element.querySelectorAll('.lt-line-clamp__less')[0];
 
@@ -109,10 +102,7 @@ module('Integration | Component | line clamp', function(hooks) {
       'see less button exists'
     );
 
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld See Less'
-    );
+    assert.dom(element).containsText('See Less');
   });
 
   test('lines attribute works as expected', async function(assert) {
@@ -150,10 +140,8 @@ module('Integration | Component | line clamp', function(hooks) {
       'lt-line-clamp__line--last is applied to last line'
     );
 
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld hellowor... See More'
-    );
+    assert.dom(element).containsText('... See More');
+
   });
 
   test('ellipsis attribute works as expected', async function(assert) {
@@ -176,16 +164,8 @@ module('Integration | Component | line clamp', function(hooks) {
       'line clamp target exists'
     );
 
-    assert.equal(
-      ellipsisElement.innerText.trim(),
-      '- See More',
-      'Ellipsis element contains expetend ellipsis and see more text'
-    );
-
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld helloworld helloworld helloworl- See More'
-    );
+    assert.dom(ellipsisElement).hasText('- See More');
+    assert.dom(element).containsText('- See More');
   });
 
   test('interactive=false hides see more button', async function(assert) {
@@ -257,10 +237,7 @@ module('Integration | Component | line clamp', function(hooks) {
       'No truncation happen, we use -webkit-line-clamp'
     );
 
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld helloworld helloworld helloworld hellowor...'
-    );
+    assert.dom(element).containsText('...');
   });
 
   test('showMoreButton=false hides see more button', async function(assert) {
@@ -326,7 +303,7 @@ module('Integration | Component | line clamp', function(hooks) {
       'see more button exists'
     );
 
-    seeMoreButton.click();
+    await click(seeMoreButton);
 
     const seeLessButton = element.querySelectorAll('.lt-line-clamp__less');
 
@@ -379,12 +356,9 @@ module('Integration | Component | line clamp', function(hooks) {
       'see more button contains expected text'
     );
 
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld helloworld helloworld hellow... Read More'
-    );
+    assert.dom(element).containsText('... Read More');
 
-    seeMoreButton.click();
+    await click(seeMoreButton);
 
     const seeLessButton = element.querySelectorAll('.lt-line-clamp__less')[0];
 
@@ -457,17 +431,11 @@ module('Integration | Component | line clamp', function(hooks) {
       'see more button exists'
     );
 
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld helloworld helloworld hellowor... See More'
-    );
+    assert.dom(element).containsText('... See More');
 
-    seeMoreButton.click();
+    await click(seeMoreButton);
 
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld See Less'
-    );
+    assert.dom(element).containsText('helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld See Less');
   });
 
   skip('resizing triggers component to re-truncate', async function(assert) {
@@ -494,10 +462,7 @@ module('Integration | Component | line clamp', function(hooks) {
       'see more button exists'
     );
 
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld helloworld helloworld hellowor... See More'
-    );
+    assert.dom(element).containsText('... See More')
 
     // Mimic window resize
     element.querySelector('#test-conatiner').style.width = '960px';
@@ -565,7 +530,7 @@ module('Integration | Component | line clamp', function(hooks) {
       'see less button exists'
     );
 
-    seeLessButton.click();
+    await click(seeLessButton);
   });
 
   test('clicking see more/see less buttons should not bubble event', async function(assert) {
@@ -610,7 +575,7 @@ module('Integration | Component | line clamp', function(hooks) {
       'see less button exists'
     );
 
-    seeLessButton.click();
+    await click(seeLessButton);
   });
 
   test('changing the component\'s text changes the component', async function(assert) {
@@ -625,21 +590,16 @@ module('Integration | Component | line clamp', function(hooks) {
     </div>`);
 
     const element = this.element;
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld helloworld helloworld hellowor... See More'
-    );
+
+    assert.dom(element).containsText('... See More');
 
     this.set('textToTruncate', 'helloworld helloworld helloworld helloworld');
 
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld helloworld helloworld'
-    );
+    assert.dom(element).containsText('helloworld helloworld helloworld helloworld');
   });
 
   test('changing the component\'s lines changes the component', async function(assert) {
-    assert.expect(2);
+    assert.expect(3);
 
     this.set('textToTruncate', 'helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld');
     this.set('linesToTruncate', 3);
@@ -652,17 +612,14 @@ module('Integration | Component | line clamp', function(hooks) {
     </div>`);
 
     const element = this.element;
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld helloworld helloworld hellowor... See More'
-    );
+    const length = element.innerText.trim().length;
+    assert.dom(element).containsText('... See More');
 
     this.set('linesToTruncate', 2);
 
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld hellowor... See More'
-    );
+    const newLength = element.innerText.trim().length;
+    assert.ok(newLength < length);
+    assert.dom(element).containsText('... See More');
   });
 
   test('truncation can be controlled via the truncate attribute', async function(assert) {
@@ -679,10 +636,7 @@ module('Integration | Component | line clamp', function(hooks) {
     </div>`);
 
     const element = this.element;
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld helloworld helloworld hellowor... See More'
-    );
+    assert.dom(element).containsText('... See More');
 
     this.set('truncate', false);
 
@@ -692,11 +646,7 @@ module('Integration | Component | line clamp', function(hooks) {
     );
 
     this.set('truncate', true);
-
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld helloworld helloworld hellowor... See More'
-    );
+    assert.dom(element).containsText('... See More');
   });
 
   test('initial truncation can be controlled via the truncate attribute (false case)', async function (assert) {
@@ -713,24 +663,15 @@ module('Integration | Component | line clamp', function(hooks) {
     </div>`);
 
     const element = this.element;
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld See Less'
-    );
+    assert.dom(element).containsText('helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld See Less');
 
     this.set('truncate', false);
 
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld See Less'
-    );
+    assert.dom(element).containsText('helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld See Less');
 
     this.set('truncate', true);
 
-    assert.equal(
-      element.innerText.trim(),
-      'helloworld helloworld helloworld helloworld hellowor... See More'
-    );
+    assert.dom(element).containsText('... See More');
   });
 
   test('stripText correctly strips <br> tags', async function(assert) {
@@ -778,17 +719,11 @@ module('Integration | Component | line clamp', function(hooks) {
     </div>`);
 
     const element = this.element;
-    assert.equal(
-      element.innerText.trim(),
-      `helloworld\nhelloworld\nhellowor... See More`
-    );
+    assert.dom(element).containsText('... See More');
 
     this.set('truncate', false);
 
-    assert.equal(
-      element.innerText.trim(),
-      `helloworld\nhelloworld\nhelloworld\nhelloworld See Less`
-    );
+    assert.equal(element.innerText.trim(), 'helloworld\nhelloworld\nhelloworld\nhelloworld See Less')
   });
 
   test('null/undefined text handled correctly', async function(assert) {
@@ -815,5 +750,49 @@ module('Integration | Component | line clamp', function(hooks) {
       element.innerText.trim(),
       ''
     );
+  });
+
+  test('[A11y] aria-expanded is correct', async function(assert) {
+    assert.expect(3);
+
+    await render(hbs`
+      <div style="width: 300px; font-size: 16px; font-family: sans-serif;">
+        {{line-clamp
+          text="helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld"
+          lines=1
+        }}
+      </div>`
+    );
+
+    assert.dom('[data-test-line-clamp-show-more-button]').hasAttribute('aria-expanded', "false");
+
+    await click('[data-test-line-clamp-show-more-button]');
+
+    assert.dom('[data-test-line-clamp-show-less-button]').hasAttribute('aria-expanded', "true");
+
+    await click('[data-test-line-clamp-show-less-button]');
+
+    assert.dom('[data-test-line-clamp-show-more-button]').hasAttribute('aria-expanded', "false");
+  });
+
+  test('[A11y] button is correctly focused after expanding/collapsing', async function(assert) {
+    assert.expect(2);
+
+    await render(hbs`
+      <div style="width: 300px; font-size: 16px; font-family: sans-serif;">
+        {{line-clamp
+          text="helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld"
+          lines=1
+        }}
+      </div>`
+    );
+
+    await click('[data-test-line-clamp-show-more-button]');
+
+    assert.dom('[data-test-line-clamp-show-less-button]').isFocused('show less button is focused');
+
+    await click('[data-test-line-clamp-show-less-button]');
+
+    assert.dom('[data-test-line-clamp-show-more-button]').isFocused('show more button is focused');
   });
 })
