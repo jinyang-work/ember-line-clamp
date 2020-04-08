@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import layout from '../templates/components/line-clamp';
 import { computed } from '@ember/object';
 import { htmlSafe, isHTMLSafe } from '@ember/string';
@@ -72,7 +72,7 @@ const HTML_ENTITIES_TO_CHARS = {
 export default Component.extend({
   layout,
 
-  unifiedEventHandler: inject(),
+  unifiedEventHandler: service('unified-event-handler'),
 
   componentName: 'LineClamp',
 
