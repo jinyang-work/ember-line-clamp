@@ -19,7 +19,7 @@ module('Integration | Component | line clamp', function(hooks) {
     const lastLine = lines[lines.length - 1];
     const lastLineChildren = lastLine.children;
     const ellipsisElement = lastLineChildren[0];
-    const seeMoreButton = ellipsisElement.children[0];
+    const seeMoreButton = ellipsisElement.children[1];
     const dummyEllipsis = element.querySelectorAll('.lt-line-clamp--dummy');
 
     assert.ok(
@@ -291,7 +291,7 @@ module('Integration | Component | line clamp', function(hooks) {
     const lastLine = lines[lines.length - 1];
     const lastLineChildren = lastLine.children;
     const ellipsisElement = lastLineChildren[0];
-    const seeMoreButton = ellipsisElement.children[0];
+    const seeMoreButton = ellipsisElement.children[1];
 
     assert.ok(
       element,
@@ -333,7 +333,7 @@ module('Integration | Component | line clamp', function(hooks) {
     const lastLine = lines[lines.length - 1];
     const lastLineChildren = lastLine.children;
     const ellipsisElement = lastLineChildren[0];
-    const seeMoreButton = ellipsisElement.children[0];
+    const seeMoreButton = ellipsisElement.children[1];
 
     assert.ok(
       element,
@@ -419,7 +419,7 @@ module('Integration | Component | line clamp', function(hooks) {
     const lastLine = lines[lines.length - 1];
     const lastLineChildren = lastLine.children;
     const ellipsisElement = lastLineChildren[0];
-    const seeMoreButton = ellipsisElement.children[0];
+    const seeMoreButton = ellipsisElement.children[1];
 
     assert.ok(
       element,

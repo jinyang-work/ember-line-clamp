@@ -26,3 +26,7 @@
 .lt-line-clamp__raw-line {
   white-space: pre-line;
 }
+
+.lt-line-clamp__dummy-element {
+  display: inline;
+}
